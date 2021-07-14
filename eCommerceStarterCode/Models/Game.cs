@@ -12,9 +12,10 @@ namespace eCommerceStarterCode.Models
         public string Name { get; set; }
         public float Price { get; set; }
         public string Description { get; set; }
-        
+        public ICollection<ShoppingCartEntry> ShoppingCartEntries { get; set; }
+
         [ForeignKey("Platform")]
         public int PlatformId { get; set; }
-        public PlatformID Platform { get; set; }
+        public Platform Platform { get; set; }
     }
 }
