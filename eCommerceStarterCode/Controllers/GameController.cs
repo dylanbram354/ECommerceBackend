@@ -66,5 +66,17 @@ namespace eCommerceStarterCode.Controllers
             var games = _context.Games.Include(g => g.Platform).Where(g => g.Platform.Name == platformName);
             return Ok(games);
         }
+
+        [HttpGet("{gameId}")]
+
+        public IActionResult GetGameById(int gameId)
+        {
+            var game = _context.Games.Where(g => g.GameId == gameId).SingleOrDefault();
+            if (game == null)
+            {
+                return NotFound();
+            }
+            return Ok(game);
+        }
     }
 }
