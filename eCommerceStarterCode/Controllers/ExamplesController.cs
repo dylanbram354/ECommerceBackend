@@ -41,5 +41,13 @@ namespace eCommerceStarterCode.Controllers
             var userEmail = _context.ShoppingCartEntries.Include(sc => sc.User).Where(sc=> sc.UserId == sc.User.Id).Select(sc => sc.User.Email);
             return Ok(userEmail);
         }
+
+        [HttpGet("gameFromReview")]
+
+        public IActionResult GetGameNameFromReview()
+        {
+            var gameName = _context.Reviews.Include(r => r.Game).Where(r => r.GameId == r.Game.GameId).Select(r => r.Game.Name);
+            return Ok(gameName);
+        }
     }
 }
