@@ -3,6 +3,7 @@ using eCommerceStarterCode.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,6 +49,22 @@ namespace eCommerceStarterCode.Controllers
                 return StatusCode(401);
             }
 
+        }
+
+        [HttpGet("all")]
+
+        public IActionResult GetAllGames()
+        {
+            var games = _context.Games;
+            return Ok(games);
+        }
+
+        [HttpGet("{platformName}/all")]
+
+        public IActionResult GetGamesByPlatformName(string platformName)
+        {
+            var games = _context.Games.Include(g => g.Platform).Where(g => g.Platform.Name == platformName);
+            return Ok(games);
         }
     }
 }
