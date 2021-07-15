@@ -80,5 +80,21 @@ namespace eCommerceStarterCode.Controllers
             }
             return Ok(game);
         }
+
+        [HttpGet("title={gameName}")]
+
+        public IActionResult GetGameByName(string gameName)
+        {
+            var game = _context.Games.Where(g => g.Name == gameName);
+            if (game == null)
+            {
+                return NotFound(gameName);
+            }
+            else
+            {
+                return Ok(game);
+            }
+            
+        }
     }
 }
