@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,15 @@ namespace eCommerceStarterCode.Controllers
                 return NotFound();
             }
             return Ok(user);
+        }
+
+        //testing foreign key relationships in ShoppingCartEntries
+        [HttpGet("userFromCart"), Authorize]
+
+        public IActionResult GetUserEmailFromCartEntry()
+        {
+            var userEmail = _context.ShoppingCartEntries.Include(sc => sc.User).Where(sc=> sc.UserId == sc.User.Id).Select(sc => sc.User.Email);
+            return Ok(userEmail);
         }
     }
 }
