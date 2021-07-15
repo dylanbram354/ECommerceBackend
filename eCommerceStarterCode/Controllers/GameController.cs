@@ -30,5 +30,24 @@ namespace eCommerceStarterCode.Controllers
             return StatusCode(201, value);
 
         }
+
+        [HttpDelete, Authorize]
+        public IActionResult DeleteGame([FromBody] int gameId)
+        {
+            var userId = User.FindFirstValue("id");
+            var game = _context.Games.Where(g => g.GameId == gameId).SingleOrDefault();
+
+            if (game.UserId == userId)
+            {
+                _context.Games.Remove(game);
+                _context.SaveChanges();
+                return StatusCode(204);
+            }
+            else
+            {
+                return StatusCode(401);
+            }
+
+        }
     }
 }
