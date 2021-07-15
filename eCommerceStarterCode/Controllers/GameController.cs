@@ -26,6 +26,8 @@ namespace eCommerceStarterCode.Controllers
 
         public IActionResult PostNewGame([FromBody]Game value)
         {
+            var userId = User.FindFirstValue("id");
+            value.UserId = userId;
             _context.Games.Add(value);
             _context.SaveChanges();
             return StatusCode(201, value);
