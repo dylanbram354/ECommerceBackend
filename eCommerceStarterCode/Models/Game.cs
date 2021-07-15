@@ -18,5 +18,9 @@ namespace eCommerceStarterCode.Models
         [ForeignKey("Platform")]
         public int PlatformId { get; set; }
         public Platform Platform { get; set; }
+
+        [ForeignKey("User")]
+        public string UserId { get; set; }
+        public User User { get; set; }
     }
 }
