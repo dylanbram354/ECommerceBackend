@@ -13,6 +13,7 @@ namespace eCommerceStarterCode.Models
         public float Price { get; set; }
         public string Description { get; set; }
         public ICollection<ShoppingCartEntry> ShoppingCartEntries { get; set; }
+        public ICollection<Review> Reviews { get; set; }
 
         [ForeignKey("Platform")]
         public int PlatformId { get; set; }

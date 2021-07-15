@@ -17,6 +17,8 @@ namespace eCommerceStarterCode.Data
         public DbSet<Platform> Platforms { get; set; }
         public DbSet<ShoppingCartEntry> ShoppingCartEntries { get; set; }
 
+        public DbSet<Review> Reviews { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -31,6 +33,16 @@ namespace eCommerceStarterCode.Data
             modelBuilder.Entity<ShoppingCartEntry>()
                 .HasOne(bc => bc.User)
                 .WithMany(c => c.ShoppingCartEntries)
+                .HasForeignKey(bc => bc.UserId);
+
+            modelBuilder.Entity<Review>().HasKey(bc => new { bc.GameId, bc.UserId });
+            modelBuilder.Entity<Review>()
+                .HasOne(bc => bc.Game)
+                .WithMany(b => b.Reviews)
+                .HasForeignKey(bc => bc.GameId);
+            modelBuilder.Entity<Review>()
+                .HasOne(bc => bc.User)
+                .WithMany(c => c.Reviews)
                 .HasForeignKey(bc => bc.UserId);
         }
 
