@@ -67,5 +67,26 @@ namespace eCommerceStarterCode.Controllers
             }
             
         }
+
+        [HttpPut("edit/gameId_{gameId}"), Authorize]
+
+        public IActionResult EditReview(int gameId, [FromBody] Review editedReview)
+        {
+            var userId = User.FindFirstValue("id");
+            var review = _context.Reviews.Where(r => (r.UserId == userId && r.GameId == gameId)).SingleOrDefault();
+            if (review != null)
+            {
+                _context.Remove(review);
+                editedReview.UserId = userId;
+                editedReview.GameId = gameId;
+                _context.Add(editedReview);
+                _context.SaveChanges();
+                return Ok(editedReview);
+            }
+            else
+            {
+                return StatusCode(404);
+            }
+        }
     }
 }
