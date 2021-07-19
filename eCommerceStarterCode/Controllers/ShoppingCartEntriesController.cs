@@ -47,14 +47,14 @@ namespace eCommerceStarterCode.Controllers
         }
 
         [HttpPut("edit/gameId_{gameId}"), Authorize]
-        public IActionResult EditEntry(int gameId, [FromBody] int newQuantity) //body is JUST an int for new quantity
+        public IActionResult EditEntry(int gameId, [FromBody] ShoppingCartEntry newEntryBody) //body is JUST an int for new quantity
         {
             var userId = User.FindFirstValue("id");
             var entry = _context.ShoppingCartEntries.Where(r => (r.UserId == userId && r.GameId == gameId)).SingleOrDefault();
             if (entry != null)
             {
                 _context.Remove(entry);
-                ShoppingCartEntry newEntry = new ShoppingCartEntry { GameId = gameId, UserId = userId, Quantity = newQuantity };
+                ShoppingCartEntry newEntry = new ShoppingCartEntry { GameId = gameId, UserId = userId, Quantity = newEntryBody.Quantity };
                 _context.Add(newEntry);
                 _context.SaveChanges();
                 return Ok(newEntry);
