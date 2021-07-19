@@ -3,6 +3,7 @@ using eCommerceStarterCode.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,7 +69,8 @@ namespace eCommerceStarterCode.Controllers
         public IActionResult GetMyCart()
         {
             var userId = User.FindFirstValue("id");
-            var entries = _context.ShoppingCartEntries.Where(r => (r.UserId == userId));
+            var entries = _context.ShoppingCartEntries.Include(sp => sp.Game).ThenInclude(spg => spg.User).Where(sp => sp.UserId == userId).ToList().
+                Select(e => new { gameTitle = e.Game.Name, gameDescription= e.Game.Description, gamePrice=e.Game.Price, userId = e.UserId, seller = e.Game.User.UserName, sellerId = e.Game.User.Id });
             if (entries != null)
             {
                 return Ok(entries);
