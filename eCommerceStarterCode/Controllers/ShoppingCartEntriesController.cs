@@ -70,7 +70,7 @@ namespace eCommerceStarterCode.Controllers
         {
             var userId = User.FindFirstValue("id");
             var entries = _context.ShoppingCartEntries.Include(sp => sp.Game).ThenInclude(spg => spg.User).Where(sp => sp.UserId == userId).ToList().
-                Select(e => new { gameTitle = e.Game.Name, gameDescription= e.Game.Description, gamePrice=e.Game.Price, userId = e.UserId, gameId=e.GameId, seller = e.Game.User.UserName, sellerId = e.Game.User.Id, quantity=e.Quantity });
+                Select(e => new { gameTitle = e.Game.Name, gameDescription= e.Game.Description, gamePrice=e.Game.Price, userId = e.UserId, gameId=e.GameId, seller = e.Game.User.UserName, sellerId = e.Game.User.Id, quantity=e.Quantity, platform=e.Game.Platform.Name });
             if (entries != null)
             {
                 return Ok(entries);
