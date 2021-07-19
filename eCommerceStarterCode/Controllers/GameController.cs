@@ -85,7 +85,7 @@ namespace eCommerceStarterCode.Controllers
 
         public IActionResult GetGameByName(string gameName)
         {
-            var game = _context.Games.Include(g => g.Platform).Where(g => g.Name == gameName);
+            var game = _context.Games.Include(g => g.Platform).Where(g => g.Name.ToUpper() == gameName.ToUpper());
             if (game == null)
             {
                 return NotFound(gameName);
