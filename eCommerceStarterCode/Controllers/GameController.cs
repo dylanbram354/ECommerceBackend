@@ -57,7 +57,7 @@ namespace eCommerceStarterCode.Controllers
 
         public IActionResult GetAllGames()
         {
-            var games = _context.Games;
+            var games = _context.Games.Include(g => g.Platform);
             return Ok(games);
         }
 
@@ -73,7 +73,7 @@ namespace eCommerceStarterCode.Controllers
 
         public IActionResult GetGameById(int gameId)
         {
-            var game = _context.Games.Where(g => g.GameId == gameId).SingleOrDefault();
+            var game = _context.Games.Include(g => g.Platform).Where(g => g.GameId == gameId).SingleOrDefault();
             if (game == null)
             {
                 return NotFound();
@@ -85,7 +85,7 @@ namespace eCommerceStarterCode.Controllers
 
         public IActionResult GetGameByName(string gameName)
         {
-            var game = _context.Games.Where(g => g.Name == gameName);
+            var game = _context.Games.Include(g => g.Platform).Where(g => g.Name == gameName);
             if (game == null)
             {
                 return NotFound(gameName);
@@ -95,6 +95,14 @@ namespace eCommerceStarterCode.Controllers
                 return Ok(game);
             }
             
+        }
+
+        [HttpGet("platforms/all")]
+
+        public IActionResult GetAllPlatforms()
+        {
+            var platforms = _context.Platforms;
+            return Ok(platforms);
         }
     }
 }
