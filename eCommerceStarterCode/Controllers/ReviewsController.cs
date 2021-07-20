@@ -3,6 +3,7 @@ using eCommerceStarterCode.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +27,8 @@ namespace eCommerceStarterCode.Controllers
 
         public IActionResult GetReviewsByGameId(int gameId)
         {
-            var reviews = _context.Reviews.Where(r => r.GameId == gameId);
+            var reviews = _context.Reviews.Where(r => r.GameId == gameId).Include(r => r.User).Include(r => r.Game).
+                Select(r => new { gameId = r.GameId, gameTitle = r.Game.Name, userId = r.UserId, rating = r.Rating, comment = r.Comment, userName = r.User.UserName });
             if (reviews == null)
             {
                 return NotFound();
