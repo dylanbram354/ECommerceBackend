@@ -57,7 +57,17 @@ namespace eCommerceStarterCode.Controllers
 
         public IActionResult GetAllGames()
         {
-            var games = _context.Games.Include(g => g.Platform);
+            var games = _context.Games.Include(g => g.Platform).Include(g => g.User).Select(g => new
+            {
+                gameId = g.GameId,
+                name = g.Name,
+                price = g.Price,
+                description = g.Description,
+                platformId = g.PlatformId,
+                platform = g.Platform,
+                userId = g.UserId,
+                seller = g.User.UserName
+            });
             return Ok(games);
         }
 
@@ -65,7 +75,17 @@ namespace eCommerceStarterCode.Controllers
 
         public IActionResult GetGamesByPlatformName(string platformName)
         {
-            var games = _context.Games.Include(g => g.Platform).Where(g => g.Platform.Name == platformName);
+            var games = _context.Games.Include(g => g.Platform).Include(g => g.User).Where(g => g.Platform.Name == platformName).Select(g => new
+            {
+                gameId = g.GameId,
+                name = g.Name,
+                price = g.Price,
+                description = g.Description,
+                platformId = g.PlatformId,
+                platform = g.Platform,
+                userId = g.UserId,
+                seller = g.User.UserName
+            }); 
             return Ok(games);
         }
 
@@ -73,7 +93,17 @@ namespace eCommerceStarterCode.Controllers
 
         public IActionResult GetGameById(int gameId)
         {
-            var game = _context.Games.Include(g => g.Platform).Where(g => g.GameId == gameId).SingleOrDefault();
+            var game = _context.Games.Include(g => g.Platform).Include(g => g.User).Where(g => g.GameId == gameId).Select(g => new
+            {
+                gameId = g.GameId,
+                name = g.Name,
+                price = g.Price,
+                description = g.Description,
+                platformId = g.PlatformId,
+                platform = g.Platform,
+                userId = g.UserId,
+                seller = g.User.UserName
+            }).SingleOrDefault(); 
             if (game == null)
             {
                 return NotFound();
@@ -85,7 +115,17 @@ namespace eCommerceStarterCode.Controllers
 
         public IActionResult GetGameByName(string gameName)
         {
-            var game = _context.Games.Include(g => g.Platform).Where(g => g.Name.ToUpper() == gameName.ToUpper());
+            var game = _context.Games.Include(g => g.Platform).Include(g => g.User).Where(g => g.Name.ToUpper() == gameName.ToUpper()).Select(g => new
+            {
+                gameId = g.GameId,
+                name = g.Name,
+                price = g.Price,
+                description = g.Description,
+                platformId = g.PlatformId,
+                platform = g.Platform,
+                userId = g.UserId,
+                seller = g.User.UserName
+            });
             if (game == null)
             {
                 return NotFound(gameName);
