@@ -35,10 +35,10 @@ namespace eCommerceStarterCode.Controllers
         }
 
         [HttpDelete, Authorize]
-        public IActionResult DeleteGame([FromBody] int gameId)
+        public IActionResult DeleteGame([FromBody] Game value)
         {
             var userId = User.FindFirstValue("id");
-            var game = _context.Games.Where(g => g.GameId == gameId).SingleOrDefault();
+            var game = _context.Games.Where(g => g.GameId == value.GameId).SingleOrDefault();
 
             if (game.UserId == userId)
             {
